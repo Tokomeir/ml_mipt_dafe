@@ -129,3 +129,12 @@ dmypy.json
 .pyre/
 .DS_Store
 .idea
+
+# other 
+base_old/
+ml_base/
+homeworks/
+*wandb/
+*_data/
+*.zip
+*images*

@@ -25,13 +25,13 @@ def main():
     train_dataset = CIFAR10(root='CIFAR10/train',
                             train=True,
                             transform=transform,
-                            download=False,
+                            download=True,
                             )
 
     test_dataset = CIFAR10(root='CIFAR10/test',
                            train=False,
                            transform=transform,
-                           download=False,
+                           download=True,
                            )
 
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
