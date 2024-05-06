@@ -138,3 +138,5 @@ homeworks/
 *_data/
 *.zip
 *images*
+*.png
+*jpg
