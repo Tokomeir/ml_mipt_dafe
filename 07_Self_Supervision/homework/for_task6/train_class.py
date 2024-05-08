@@ -104,13 +104,15 @@ class BaseTrainProcess:
         self.model.zero_grad()
 
         cum_loss = 0.0
+        cum_acc = 0.0
 
         pbar = tqdm(enumerate(self.train_loader), total=len(self.train_loader),
                     desc=f'Train {self.current_epoch}/{self.hyp["epochs"] - 1}')
-        cum_loss = self._inner_train_step(pbar)
+        cum_loss, cum_acc = self._inner_train_step(pbar)
 
         cum_loss /= len(self.train_loader)
-        return [cum_loss]
+        cum_acc /= len(self.train_loader)
+        return [cum_loss, cum_acc]
 
     def _inner_valid_step(self, pbar):
         pass
@@ -119,13 +121,15 @@ class BaseTrainProcess:
         self.model.eval()
 
         cum_loss = 0.0
+        cum_acc = 0.0
 
         pbar = tqdm(enumerate(self.valid_loader), total=len(self.valid_loader),
                     desc=f'Valid {self.current_epoch}/{self.hyp["epochs"] - 1}')
-        cum_loss = self._inner_valid_step(pbar)
+        cum_loss, cum_acc = self._inner_valid_step(pbar)
 
         cum_loss /= len(self.valid_loader)
-        return [cum_loss]
+        cum_acc /= len(self.train_loader)
+        return [cum_loss, cum_acc]
 
     def scheduler_step(self):
         pass
@@ -208,7 +212,7 @@ class  SimCLRTrainProcess(BaseTrainProcess):
             s = f'Train {self.current_epoch}/{self.hyp["epochs"] - 1}, Loss: {proc_loss:4.3f}'
             pbar.set_description(s)
 
-        return cum_loss
+        return [cum_loss, 0]
 
     def _inner_valid_step(self, pbar):
         cum_loss = 0.0
@@ -229,7 +233,7 @@ class  SimCLRTrainProcess(BaseTrainProcess):
             s = f'Valid {self.current_epoch}/{self.hyp["epochs"] - 1}, Loss: {proc_loss:4.3f}'
             pbar.set_description(s)
 
-        return cum_loss
+        return [cum_loss, 0]
 
     def scheduler_step(self):
         if self.current_epoch < 10:

@@ -73,8 +73,8 @@ class PreModel(nn.Module):
         
         self.emb_size = tuple(model.children())[-1].in_features
         
-        # for p in self.encoder.parameters():
-        #     p.requires_grad = False
+        for p in self.encoder.parameters():
+             p.requires_grad = True
         
         self.projector = ProjectionHead(self.emb_size, 2048, 128)
     
